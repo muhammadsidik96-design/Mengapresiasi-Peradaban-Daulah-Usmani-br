@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI PAI IX - Peradaban Daulah Usmani</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Amiri for Islamic vibe & Plus Jakarta Sans for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            850: '#064e3b',
+                            900: '#022c22',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                        ottoman: {
+                            blue: '#1e3a8a',
+                            red: '#991b1b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styling & Ottoman Geometric Pattern Background */
+        .bg-pattern {
+            background-color: #022c22;
+            background-image: radial-gradient(#f59e0b 0.75px, transparent 0.75px), radial-gradient(#f59e0b 0.75px, #022c22 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.98;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .glass-card-dark {
+            background: rgba(6, 78, 59, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        /* Gold Gradient Text */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Gold Gradient Border */
+        .border-gold-gradient {
+            border-image: linear-gradient(to right, #f59e0b, #fbbf24, #b45309) 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #022c22;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        .tab-active {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border-bottom: 3px solid #f59e0b;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-emerald-950 text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-white">
+
+    <!-- TOP NAVBAR -->
+    <header class="sticky top-0 z-50 bg-emerald-900/95 border-b border-gold-500/30 backdrop-blur-md text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('home')">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gold-600 to-gold-400 flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-mosque text-emerald-950 text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg leading-tight text-amber-300">MPI PAI-BP IX</h1>
+                    <p class="text-xs text-emerald-200">Peradaban Daulah Usmani</p>
+                </div>
+            </div>
+
+            <!-- Header Right Controls -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <!-- Audio Toggle Button -->
+                <button id="bgmToggleBtn" onclick="toggleBGM()" class="p-2 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-amber-400 border border-gold-500/30 transition flex items-center space-x-1 text-xs sm:text-sm" title="Musik Latar">
+                    <i id="bgmIcon" class="fa-solid fa-volume-xmark"></i>
+                    <span class="hidden sm:inline">Musik</span>
+                </button>
+
+                <!-- Help/Guide Button -->
+                <button onclick="navigateTo('petunjuk')" class="p-2 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-amber-400 border border-gold-500/30 transition text-xs sm:text-sm" title="Petunjuk">
+                    <i class="fa-solid fa-circle-question"></i>
+                </button>
+
+                <!-- Sidebar Toggle (Mobile) -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-emerald-800 text-amber-400">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Bar Indicator -->
+        <div class="w-full bg-emerald-950 h-1.5">
+            <div id="progressBar" class="bg-gradient-to-r from-gold-500 to-amber-300 h-1.5 w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- MAIN WRAPPER WITH NAVIGATION -->
+    <div class="flex-grow flex flex-col md:flex-row max-w-7xl w-full mx-auto px-2 sm:px-4 lg:px-8 py-4 gap-4">
+
+        <!-- SIDEBAR NAVIGATION (Desktop & Mobile Dropdown) -->
+        <aside id="sidebarNav" class="hidden md:block w-full md:w-64 flex-shrink-0 bg-emerald-900/90 rounded-2xl border border-gold-500/30 p-4 text-white shadow-xl h-fit sticky top-20">
+            <div class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 px-2 flex items-center justify-between">
+                <span>Menu Navigasi</span>
+                <i class="fa-solid fa-compass"></i>
+            </div>
+            <nav class="space-y-1.5 text-sm">
+                <button onclick="navigateTo('home')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="home">
+                    <i class="fa-solid fa-house w-5 text-amber-400"></i>
+                    <span>Halaman Utama</span>
+                </button>
+                <button onclick="navigateTo('petunjuk')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="petunjuk">
+                    <i class="fa-solid fa-book-open-reader w-5 text-amber-400"></i>
+                    <span>Petunjuk & Tujuan</span>
+                </button>
+                <button onclick="navigateTo('materi')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="materi">
+                    <i class="fa-solid fa-book-bookmark w-5 text-amber-400"></i>
+                    <span>Materi Pembelajaran</span>
+                </button>
+                <button onclick="navigateTo('timeline')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="timeline">
+                    <i class="fa-solid fa-timeline w-5 text-amber-400"></i>
+                    <span>Timeline Sejarah</span>
+                </button>
+                <button onclick="navigateTo('galeri')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="galeri">
+                    <i class="fa-solid fa-images w-5 text-amber-400"></i>
+                    <span>Galeri Peradaban</span>
+                </button>
+                <button onclick="navigateTo('video')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="video">
+                    <i class="fa-solid fa-video w-5 text-amber-400"></i>
+                    <span>Video Pembelajaran</span>
+                </button>
+                <button onclick="navigateTo('kuis')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="kuis">
+                    <i class="fa-solid fa-circle-question w-5 text-amber-400"></i>
+                    <span>Kuis Interaktif</span>
+                </button>
+                <button onclick="navigateTo('evaluasi')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="evaluasi">
+                    <i class="fa-solid fa-file-pen w-5 text-amber-400"></i>
+                    <span>Evaluasi Hasil</span>
+                </button>
+                <button onclick="navigateTo('profil')" class="nav-btn w-full text-left px-3 py-2.5 rounded-xl transition flex items-center space-x-3 hover:bg-emerald-800/80" data-page="profil">
+                    <i class="fa-solid fa-user-gear w-5 text-amber-400"></i>
+                    <span>Profil Pengembang</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-grow w-full overflow-hidden">
+
+            <!-- PAGE 1: HOME / HALAMAN PEMBUKA -->
+            <section id="page-home" class="page-content animate-fade-in">
+                <div class="relative bg-gradient-to-br from-emerald-900 via-emerald-850 to-emerald-950 rounded-3xl p-6 sm:p-10 text-white border border-gold-500/40 shadow-2xl overflow-hidden min-h-[500px] flex flex-col justify-between">
+                    <!-- Background Ornament Overlay -->
+                    <div class="absolute inset-0 bg-pattern opacity-30 pointer-events-none"></div>
+                    
+                    <!-- Decorative Crest -->
+                    <div class="relative z-10 text-center max-w-3xl mx-auto my-auto space-y-6">
+                        <div class="inline-block p-3 rounded-full bg-gold-500/10 border border-gold-400/30 backdrop-blur-sm mb-2">
+                            <i class="fa-solid fa-crown text-4xl sm:text-5xl text-gold-400 animate-bounce"></i>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <span class="px-4 py-1.5 rounded-full bg-gold-500/20 text-gold-300 font-semibold text-xs sm:text-sm uppercase tracking-widest border border-gold-500/30">
+                                MEDIA PEMBELAJARAN INTERAKTIF (MPI)
+                            </span>
+                            <h2 class="text-3xl sm:text-5xl font-extrabold text-amber-300 tracking-tight leading-tight">
+                                Mengapresiasi Peradaban Daulah Usmani
+                            </h2>
+                            <p class="text-emerald-200 text-sm sm:text-base font-medium">
+                                Mata Pelajaran: Pendidikan Agama Islam dan Budi Pekerti (PAI-BP) • Kelas IX SMP/MTs
+                            </p>
+                        </div>
+
+                        <!-- Mosque Graphic / SVG Illustration -->
+                        <div class="py-4 flex justify-center">
+                            <svg class="w-64 h-32 sm:w-80 sm:h-40 text-gold-400 drop-shadow-lg" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Ottoman Style Mosque Silhouette -->
+                                <path d="M200 40 C170 80, 160 110, 160 140 L240 140 C240 110, 230 80, 200 40 Z" fill="currentColor" opacity="0.9"/>
+                                <path d="M200 20 L200 40" stroke="currentColor" stroke-width="3"/>
+                                <circle cx="200" cy="18" r="4" fill="currentColor"/>
+                                <rect x="110" y="70" width="10" height="70" fill="currentColor"/>
+                                <path d="M115 50 L110 70 L120 70 Z" fill="currentColor"/>
+                                <rect x="280" y="70" width="10" height="70" fill="currentColor"/>
+                                <path d="M285 50 L280 70 L290 70 Z" fill="currentColor"/>
+                                <rect x="140" y="100" width="120" height="50" fill="currentColor" opacity="0.7"/>
+                                <path d="M170 150 C170 120, 230 120, 230 150 Z" fill="#022c22"/>
+                                <rect x="80" y="140" width="240" height="20" fill="currentColor" opacity="0.8"/>
+                            </svg>
+                        </div>
+
+                        <div class="pt-2">
+                            <button onclick="navigateTo('materi')" class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-emerald-950 bg-gradient-to-r from-gold-400 via-amber-400 to-gold-500 rounded-full shadow-lg hover:shadow-gold-500/50 hover:scale-105 transition duration-300 ease-out">
+                                <span class="text-base sm:text-lg">MULAI BELAJAR</span>
+                                <i class="fa-solid fa-circle-arrow-right ml-3 text-lg group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Info -->
+                    <div class="relative z-10 flex flex-col sm:flex-row justify-between items-center text-xs text-emerald-300/80 border-t border-emerald-800/80 pt-4 mt-6">
+                        <span><i class="fa-solid fa-graduation-cap mr-1"></i> Kurikulum Merdeka / 2013 Revision</span>
+                        <span><i class="fa-solid fa-award mr-1"></i> Modul Digital Kelas IX</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 2: PETUNJUK & TUJUAN -->
+            <section id="page-petunjuk" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-6 sm:p-8 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <div class="border-b border-emerald-100 pb-4">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-emerald-900 flex items-center gap-3">
+                            <i class="fa-solid fa-compass text-gold-600"></i>
+                            Petunjuk Penggunaan & Tujuan Pembelajaran
+                        </h2>
+                        <p class="text-slate-600 text-sm mt-1">Pahami panduan navigasi dan target capaian belajar sebelum memulai.</p>
+                    </div>
+
+                    <!-- Grid Content -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Petunjuk Navigasi -->
+                        <div class="bg-emerald-50/80 rounded-2xl p-5 border border-emerald-200/60 space-y-4">
+                            <h3 class="font-bold text-lg text-emerald-900 flex items-center gap-2">
+                                <i class="fa-solid fa-hand-pointer text-gold-600"></i>
+                                Panduan Penggunaan Media
+                            </h3>
+                            <ul class="space-y-3 text-sm text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
+                                    <span>Gunakan menu <strong>Sidebar Navigasi</strong> di samping (atau atas pada smartphone) untuk berpindah modul.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
+                                    <span>Pelajari modul <strong>Materi</strong> secara berurutan menggunakan tab subbab yang tersedia.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
+                                    <span>Gunakan <strong>Kuis Interaktif</strong> untuk menguji pemahaman dengan umpan balik cepat.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i>
+                                    <span>Kerjakan <strong>Evaluasi Pembelajaran</strong> di akhir untuk memperoleh skor dan kategori penilaian.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-volume-high text-amber-600 mt-1"></i>
+                                    <span>Aktifkan atau matikan audio latar melalui tombol <strong>Musik</strong> di pojok kanan atas.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Tujuan Pembelajaran -->
+                        <div class="bg-amber-50/80 rounded-2xl p-5 border border-amber-200/60 space-y-4">
+                            <h3 class="font-bold text-lg text-amber-900 flex items-center gap-2">
+                                <i class="fa-solid fa-bullseye text-gold-600"></i>
+                                Tujuan Pembelajaran
+                            </h3>
+                            <p class="text-xs font-semibold text-amber-800 uppercase tracking-wide">Setelah mempelajari modul ini, siswa mampu:</p>
+                            <ol class="space-y-2 text-sm text-slate-700 list-decimal list-inside">
+                                <li>Menjelaskan sejarah berdirinya Daulah Usmani.</li>
+                                <li>Mengidentifikasi tokoh-tokoh penting Daulah Usmani.</li>
+                                <li>Menjelaskan perkembangan peradaban Islam pada masa Daulah Usmani.</li>
+                                <li>Mengidentifikasi kemajuan bidang pendidikan, ilmu pengetahuan, arsitektur, dan kebudayaan.</li>
+                                <li>Meneladani nilai-nilai positif peradaban Daulah Usmani dalam kehidupan sehari-hari.</li>
+                                <li>Menunjukkan sikap apresiatif terhadap warisan peradaban Islam.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Action Navigation Footer -->
+                    <div class="flex justify-end pt-4">
+                        <button onclick="navigateTo('materi')" class="px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold rounded-xl transition flex items-center gap-2 shadow-md">
+                            <span>Lanjut ke Materi</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 3: MATERI PEMBELAJARAN -->
+            <section id="page-materi" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-4 sm:p-6 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <!-- Sub-navigation Tabs -->
+                    <div class="flex flex-wrap gap-2 border-b border-emerald-100 pb-3" id="materiTabs">
+                        <button onclick="switchMateriTab(0)" class="materi-tab-btn tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2">
+                            <i class="fa-solid fa-flag"></i> Sejarah Berdiri
+                        </button>
+                        <button onclick="switchMateriTab(1)" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-users"></i> Tokoh Penting
+                        </button>
+                        <button onclick="switchMateriTab(2)" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-crown"></i> Masa Kejayaan
+                        </button>
+                        <button onclick="switchMateriTab(3)" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-chess-rook"></i> Kemajuan Peradaban
+                        </button>
+                        <button onclick="switchMateriTab(4)" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-archway"></i> Peninggalan
+                        </button>
+                        <button onclick="switchMateriTab(5)" class="materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-heart"></i> Nilai Keteladanan
+                        </button>
+                    </div>
+
+                    <!-- SUBBAB 1: SEJARAH BERDIRI -->
+                    <div id="materi-content-0" class="materi-subcontent space-y-4">
+                        <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-5 rounded-2xl border-l-4 border-gold-400">
+                            <h3 class="text-xl font-bold text-amber-300">1. Sejarah Berdirinya Daulah Usmani</h3>
+                            <p class="text-xs text-emerald-200 mt-1">Awal mula pembentukan kekhalifahan terbesar di Asia Kecil dan Eropa Timur.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-slate-700 text-sm leading-relaxed">
+                            <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <h4 class="font-bold text-emerald-900 border-b pb-1">Asal Usul Suku Kayi</h4>
+                                <p>Daulah Usmani berasal dari suku Kayi, salah satu cabang suku Turki Saljuk. Karena serangan bangsa Mongol di bawah pimpinan Mongol Khan, kabilah ini berpindah dari Turkestan menuju Anatolia (Wilayah Turki modern).</p>
+                                <p>Di bawah pimpinan <strong>Erthugrul</strong>, mereka mengabdi kepada Sultan Alauddin II dari Daulah Saljuk Rum dan diberikan wilayah Iskishehir di perbatasan Bizantium.</p>
+                            </div>
+                            <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <h4 class="font-bold text-emerald-900 border-b pb-1">Proklamasi Berdirinya (1299 M)</h4>
+                                <p>Setelah Erthugrul wafat pada tahun 1281 M, kepemimpinan dilanjutkan oleh putranya, <strong>Osman I (Osman Bey)</strong>. Ketika Sultan Saljuk wafat tanpa penerus akibat serangan Mongol, Osman I memproklamasikan kemerdekaan wilayahnya pada tahun <strong>1299 M / 699 H</strong>.</p>
+                                <p>Nama "Usmani" atau "Ottoman" diambil langsung dari nama pendirinya, yaitu Osman I.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBBAB 2: TOKOH PENTING -->
+                    <div id="materi-content-1" class="materi-subcontent hidden space-y-4">
+                        <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-5 rounded-2xl border-l-4 border-gold-400">
+                            <h3 class="text-xl font-bold text-amber-300">2. Tokoh-Tokoh Penting Daulah Usmani</h3>
+                            <p class="text-xs text-emerald-200 mt-1">Para pemimpin kunci yang membangun dan memperluas pengaruh Islam.</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 hover:shadow-md transition">
+                                <div class="w-10 h-10 rounded-full bg-emerald-800 text-gold-400 flex items-center justify-center font-bold mb-3">1</div>
+                                <h4 class="font-bold text-emerald-900 text-base">Osman I (1299–1326 M)</h4>
+                                <p class="text-xs text-slate-600 mt-2">Pendiri Daulah Usmani. Beliau menetapkan dasar pemerintahan, membentuk pasukan yang tangguh, serta memperluas wilayah hingga mendekati perbatasan Bizantium.</p>
+                            </div>
+                            <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 hover:shadow-md transition">
+                                <div class="w-10 h-10 rounded-full bg-emerald-800 text-gold-400 flex items-center justify-center font-bold mb-3">2</div>
+                                <h4 class="font-bold text-emerald-900 text-base">Orhan (1326–1360 M)</h4>
+                                <p class="text-xs text-slate-600 mt-2">Putra Osman I. Mendirikan pasukan elite <strong>Janissary (Inkishariyyah)</strong>, mencetak mata uang pertama, dan memindahkan ibu kota ke Bursa.</p>
+                            </div>
+                            <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 hover:shadow-md transition">
+                                <div class="w-10 h-10 rounded-full bg-emerald-800 text-gold-400 flex items-center justify-center font-bold mb-3">3</div>
+                                <h4 class="font-bold text-emerald-900 text-base">Murad I (1360–1389 M)</h4>
+                                <p class="text-xs text-slate-600 mt-2">Memperluas wilayah ke kawasan Balkan (Eropa). Menaklukkan Adrianopel (Edirne) dan menjadikannya ibu kota baru.</p>
+                            </div>
+                            <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 hover:shadow-md transition">
+                                <div class="w-10 h-10 rounded-full bg-emerald-800 text-gold-400 flex items-center justify-center font-bold mb-3">4</div>
+                                <h4 class="font-bold text-emerald-900 text-base">Muhammad Al-Fatih (1451–1481 M)</h4>
+                                <p class="text-xs text-slate-600 mt-2">Penakluk Konstantinopel pada tahun 1453 M di usia 21 tahun. Mengubah benteng Romawi Timur menjadi Istanbul dan mewujudkan bisyarah Rasulullah SAW.</p>
+                            </div>
+                            <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 hover:shadow-md transition">
+                                <div class="w-10 h-10 rounded-full bg-emerald-800 text-gold-400 flex items-center justify-center font-bold mb-3">5</div>
+                                <h4 class="font-bold text-emerald-900 text-base">Sulaiman Al-Qanuni (1520–1566 M)</h4>
+                                <p class="text-xs text-slate-600 mt-2">Membawa Daulah Usmani ke puncak kejayaan (*The Magnificent*). Menyusun undang-undang terstruktur (*Kanunname*) dan memperluas wilayah hingga 3 benua.</p>
+                            </div>
+                            <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 hover:shadow-md transition">
+                                <div class="w-10 h-10 rounded-full bg-emerald-800 text-gold-400 flex items-center justify-center font-bold mb-3">6</div>
+                                <h4 class="font-bold text-emerald-900 text-base">Mimar Sinan (Arsitek Utama)</h4>
+                                <p class="text-xs text-slate-600 mt-2">Arsitek jenius pada masa Sultan Sulaiman. Merancang karya monumental seperti Masjid Suleymaniye di Istanbul dan Masjid Selimiye di Edirne.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBBAB 3: MASA KEJAYAAN -->
+                    <div id="materi-content-2" class="materi-subcontent hidden space-y-4">
+                        <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-5 rounded-2xl border-l-4 border-gold-400">
+                            <h3 class="text-xl font-bold text-amber-300">3. Masa Kejayaan Daulah Usmani</h3>
+                            <p class="text-xs text-emerald-200 mt-1">Puncak kekuasaan melintasi tiga benua: Asia, Eropa, dan Afrika.</p>
+                        </div>
+                        <div class="space-y-4 text-sm text-slate-700">
+                            <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200">
+                                <h4 class="font-bold text-amber-900 text-base mb-2"><i class="fa-solid fa-trophy text-gold-600 mr-2"></i>Penaklukan Konstantinopel (1453 M)</h4>
+                                <p>Di bawah Sultan Muhammad II (Al-Fatih), strategi militer modern diterapkan dengan membawa kapal-kapal melewati daratan Bukit Galata. Peristiwa sejarah ini menandai berakhirnya Abad Pertengahan dan Kekaisaran Bizantium.</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                    <h5 class="font-bold text-emerald-900 mb-1">Cakupan Wilayah Kekuasaan</h5>
+                                    <p class="text-xs">Menguasai Asia Barat, Afrika Utara, hingga Eropa Tenggara (Balkan, Hungaria, hingga mendekati benteng Wina, Austria).</p>
+                                </div>
+                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                    <h5 class="font-bold text-emerald-900 mb-1">Pusat Khilafah Islamiyah</h5>
+                                    <p class="text-xs">Sultan Selim I menerima penyerahan gelar Khalifah dari peninggalan Abbasiyah di Kairo, menjadikannya pelindung dua Kota Suci (Makkah & Madinah).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBBAB 4: KEMAJUAN PERADABAN -->
+                    <div id="materi-content-3" class="materi-subcontent hidden space-y-4">
+                        <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-5 rounded-2xl border-l-4 border-gold-400">
+                            <h3 class="text-xl font-bold text-amber-300">4. Kemajuan Peradaban Islam</h3>
+                            <p class="text-xs text-emerald-200 mt-1">Inovasi di berbagai bidang kehidupan berbangsa dan bernegara.</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                <h4 class="font-bold text-emerald-900 text-base mb-2 flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-gold-600"></i> Bidang Pemerintahan & Hukum</h4>
+                                <p class="text-xs text-slate-600">Pengkodean hukum syariat dan sipil (*Kanunname*) secara sistematis yang menghormati keberagaman ras, suku, dan agama di bawah sistem *Millet*.</p>
+                            </div>
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                <h4 class="font-bold text-emerald-900 text-base mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-halved text-gold-600"></i> Bidang Militer</h4>
+                                <p class="text-xs text-slate-600">Pembentukan tentara disiplin Janissary serta pengembangan teknologi meriam raksasa (*Dardanelles Gun*) dan armada laut terkuat di Mediterania.</p>
+                            </div>
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                <h4 class="font-bold text-emerald-900 text-base mb-2 flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-gold-600"></i> Pendidikan & Ilmu Pengetahuan</h4>
+                                <p class="text-xs text-slate-600">Pembangunan Madrasah Sahn-i Seman, perpustakaan publik, rumah sakit (*Darussifa*), serta perkembangan ilmu astronomi, kedokteran, dan geografi (Piri Reis).</p>
+                            </div>
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
+                                <h4 class="font-bold text-emerald-900 text-base mb-2 flex items-center gap-2"><i class="fa-solid fa-palette text-gold-600"></i> Kebudayaan & Seni</h4>
+                                <p class="text-xs text-slate-600">Seni kaligrafi (*Khatt*), miniatur melukis, seni ornamen keramik Iznik, serta seni musik militer Mehter yang khas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBBAB 5: PENINGGALAN PERADABAN -->
+                    <div id="materi-content-4" class="materi-subcontent hidden space-y-4">
+                        <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-5 rounded-2xl border-l-4 border-gold-400">
+                            <h3 class="text-xl font-bold text-amber-300">5. Peninggalan Peradaban Daulah Usmani</h3>
+                            <p class="text-xs text-emerald-200 mt-1">Karya abadi arsitektur dan ilmu yang dirasakan hingga masa kini.</p>
+                        </div>
+                        <div class="space-y-3 text-sm text-slate-700">
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                                <div class="w-16 h-16 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl flex-shrink-0">
+                                    <i class="fa-solid fa-mosque"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-emerald-900">Masjid Hagia Sophia & Sultanahmet (Blue Mosque)</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Mengubah Hagia Sophia menjadi masjid ikonik dan membangun Masjid Sultanahmet dengan 6 menara berciri khas kubah megah bertingkat.</p>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                                <div class="w-16 h-16 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl flex-shrink-0">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-emerald-900">Peta Piri Reis (1513 M)</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Peta dunia yang sangat akurat karya Laksamana Piri Reis, menggambarkan garis pantai benua Amerika dan Atlantik dengan rinci pada awal abad ke-16.</p>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                                <div class="w-16 h-16 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl flex-shrink-0">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-emerald-900">Istana Topkapi & Kompleks Kulliye</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Pusat pemerintahan dan pendidikan tinggi serta sistem sosial integratif (*Kulliye*) yang menyatukan masjid, sekolah, rumah sakit, dan dapur umum.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBBAB 6: NILAI KETELADANAN -->
+                    <div id="materi-content-5" class="materi-subcontent hidden space-y-4">
+                        <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-5 rounded-2xl border-l-4 border-gold-400">
+                            <h3 class="text-xl font-bold text-amber-300">6. Nilai Keteladanan & Hikmah</h3>
+                            <p class="text-xs text-emerald-200 mt-1">Sikap mulia yang dapat kita terapkan dalam kehidupan sehari-hari.</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2">
+                                <div class="flex items-center gap-2 font-bold text-emerald-900">
+                                    <i class="fa-solid fa-hand-holding-heart text-gold-600"></i>
+                                    <span>Semangat Pantang Menyerah</span>
+                                </div>
+                                <p class="text-xs text-slate-600">Meneladani kegigihan Sultan Muhammad Al-Fatih dalam memecahkan masalah sulit tanpa menyerah pada keadaaan.</p>
+                            </div>
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2">
+                                <div class="flex items-center gap-2 font-bold text-emerald-900">
+                                    <i class="fa-solid fa-scale-balanced text-gold-600"></i>
+                                    <span>Toleransi & Keadilan</span>
+                                </div>
+                                <p class="text-xs text-slate-600">Menghargai keberagaman agama, suku, dan pandangan orang lain sebagaimana penguasa Usmani melindungi warga beragama lain.</p>
+                            </div>
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2">
+                                <div class="flex items-center gap-2 font-bold text-emerald-900">
+                                    <i class="fa-solid fa-book-open text-gold-600"></i>
+                                    <span>Cinta Ilmu & Inovasi</span>
+                                </div>
+                                <p class="text-xs text-slate-600">Selalu bersemangat belajar, menguasai teknologi modern, dan berkarya positif bagi kemajuan masyarakat.</p>
+                            </div>
+                            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2">
+                                <div class="flex items-center gap-2 font-bold text-emerald-900">
+                                    <i class="fa-solid fa-people-roof text-gold-600"></i>
+                                    <span>Kepedulian Sosial</span>
+                                </div>
+                                <p class="text-xs text-slate-600">Membantu sesama yang membutuhkan melalui semangat wakaf dan lembaga sosial sebagaimana konsep *Kulliye*.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Step Button -->
+                    <div class="flex justify-between items-center pt-4 border-t border-slate-200">
+                        <span class="text-xs text-slate-500">Pilih tab subbab di atas untuk membaca bagian lain.</span>
+                        <button onclick="navigateTo('timeline')" class="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white text-sm font-semibold rounded-xl transition flex items-center gap-2">
+                            <span>Lanjut: Timeline Sejarah</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 4: TIMELINE SEJARAH -->
+            <section id="page-timeline" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-6 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-emerald-900 flex items-center gap-3">
+                            <i class="fa-solid fa-timeline text-gold-600"></i>
+                            Timeline Perjalanan Sejarah Daulah Usmani
+                        </h2>
+                        <p class="text-xs text-slate-600 mt-1">Klik pada setiap tonggak sejarah untuk membaca penjelasan detailnya.</p>
+                    </div>
+
+                    <!-- Timeline Interactive Container -->
+                    <div class="relative border-l-2 border-gold-500/50 ml-4 sm:ml-8 space-y-8 py-4">
+                        
+                        <!-- Timeline Item 1 -->
+                        <div class="relative pl-6 sm:pl-8 cursor-pointer group" onclick="toggleTimelineDetail('tl-1')">
+                            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-500 border-4 border-emerald-900 group-hover:scale-125 transition"></div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-gold-500 transition shadow-sm">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-emerald-800 text-gold-300 rounded-full">1299 M</span>
+                                <h3 class="font-bold text-emerald-900 text-base mt-2">Proklamasi Berdirinya Daulah Usmani</h3>
+                                <p class="text-xs text-slate-600 mt-1">Osman I memproklamasikan kemerdekaan wilayahnya setelah keruntuhan Saljuk Rum.</p>
+                                <div id="tl-1" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 bg-emerald-50/50 p-3 rounded-lg">
+                                    Osman I memperkuat fondasi negara dengan membentuk struktur militer dasar dan menjalin hubungan harmonis dengan para ulama tasawuf (seperti Syekh Edebali).
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 2 -->
+                        <div class="relative pl-6 sm:pl-8 cursor-pointer group" onclick="toggleTimelineDetail('tl-2')">
+                            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-500 border-4 border-emerald-900 group-hover:scale-125 transition"></div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-gold-500 transition shadow-sm">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-emerald-800 text-gold-300 rounded-full">1326 M</span>
+                                <h3 class="font-bold text-emerald-900 text-base mt-2">Penaklukan Bursa & Ibu Kota Baru</h3>
+                                <p class="text-xs text-slate-600 mt-1">Sultan Orhan menjadikan Bursa sebagai ibu kota pertama dan mencetak mata uang koin Usmani.</p>
+                                <div id="tl-2" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 bg-emerald-50/50 p-3 rounded-lg">
+                                    Pada periode ini, pasukan Janissary dibentuk sebagai pasukan khusus infanteri berdisiplin tinggi yang direkrut dan dilatih dengan ajaran Islam.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 3 -->
+                        <div class="relative pl-6 sm:pl-8 cursor-pointer group" onclick="toggleTimelineDetail('tl-3')">
+                            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-500 border-4 border-emerald-900 group-hover:scale-125 transition"></div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-gold-500 transition shadow-sm">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-emerald-800 text-gold-300 rounded-full">1453 M</span>
+                                <h3 class="font-bold text-emerald-900 text-base mt-2">Penaklukan Konstantinopel (Istanbul)</h3>
+                                <p class="text-xs text-slate-600 mt-1">Sultan Muhammad Al-Fatih menaklukkan ibu kota Bizantium pada usia 21 tahun.</p>
+                                <div id="tl-3" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 bg-emerald-50/50 p-3 rounded-lg">
+                                    Penaklukan bersejarah menggunakan meriam raksasa dan pemindahan 70 kapal melintasi bukit daratan. Kota ini diubah namanya menjadi Istanbul ("Kota Islam").
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 4 -->
+                        <div class="relative pl-6 sm:pl-8 cursor-pointer group" onclick="toggleTimelineDetail('tl-4')">
+                            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-500 border-4 border-emerald-900 group-hover:scale-125 transition"></div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-gold-500 transition shadow-sm">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-emerald-800 text-gold-300 rounded-full">1520–1566 M</span>
+                                <h3 class="font-bold text-emerald-900 text-base mt-2">Puncak Keemasan (Sultan Sulaiman Al-Qanuni)</h3>
+                                <p class="text-xs text-slate-600 mt-1">Era keemasan kebudayaan, undang-undang, serta arsitektur monumental di bawah Mimar Sinan.</p>
+                                <div id="tl-4" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 bg-emerald-50/50 p-3 rounded-lg">
+                                    Daulah Usmani menjadi super power dunia yang menguasai wilayah membentang di 3 benua, serta menjadi pelindung utama rute haji dan perdagangan dunia.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 5 -->
+                        <div class="relative pl-6 sm:pl-8 cursor-pointer group" onclick="toggleTimelineDetail('tl-5')">
+                            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-500 border-4 border-emerald-900 group-hover:scale-125 transition"></div>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-gold-500 transition shadow-sm">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-emerald-800 text-gold-300 rounded-full">1924 M</span>
+                                <h3 class="font-bold text-emerald-900 text-base mt-2">Khilafah Usmani Berakhir</h3>
+                                <p class="text-xs text-slate-600 mt-1">Berakhirnya sistem kekhalifahan dan berdirinya Republik Turki modern.</p>
+                                <div id="tl-5" class="hidden mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 bg-emerald-50/50 p-3 rounded-lg">
+                                    Setelah lebih dari 600 tahun memimpin peradaban, sistem khilafah resmi dihapus pada 3 Maret 1924 oleh Mustafa Kemal Ataturk.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 5: GALERI PERADABAN -->
+            <section id="page-galeri" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-6 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-emerald-900 flex items-center gap-3">
+                            <i class="fa-solid fa-images text-gold-600"></i>
+                            Galeri Peradaban Usmani
+                        </h2>
+                        <p class="text-xs text-slate-600 mt-1">Visualisasi keindahan arsitektur, seni, dan warisan sejarah.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Card 1 -->
+                        <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition">
+                            <div class="h-44 bg-emerald-900 flex items-center justify-center relative p-4">
+                                <!-- SVG Graphic Illustration for Blue Mosque -->
+                                <svg class="w-full h-full text-amber-300" viewBox="0 0 200 120" fill="none">
+                                    <path d="M100 20 C80 50, 70 70, 70 90 L130 90 C130 70, 120 50, 100 20 Z" fill="currentColor"/>
+                                    <rect x="50" y="40" width="8" height="50" fill="currentColor"/>
+                                    <rect x="142" y="40" width="8" height="50" fill="currentColor"/>
+                                    <rect x="30" y="50" width="6" height="40" fill="currentColor"/>
+                                    <rect x="164" y="50" width="6" height="40" fill="currentColor"/>
+                                    <rect x="60" y="80" width="80" height="20" fill="#022c22"/>
+                                </svg>
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <h3 class="font-bold text-emerald-900 text-sm">Masjid Sultanahmet (Blue Mosque)</h3>
+                                <p class="text-xs text-slate-600">Dibangun oleh Sultan Ahmed I, terkenal dengan interior keramik iznik berwarna biru dan 6 menara megah.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition">
+                            <div class="h-44 bg-emerald-900 flex items-center justify-center relative p-4">
+                                <svg class="w-full h-full text-gold-400" viewBox="0 0 200 120" fill="none">
+                                    <circle cx="100" cy="60" r="40" fill="none" stroke="currentColor" stroke-width="3"/>
+                                    <path d="M70 60 C80 40, 120 40, 130 60 C120 80, 80 80, 70 60 Z" fill="currentColor" opacity="0.6"/>
+                                    <text x="100" y="65" text-anchor="middle" font-family="Amiri" font-size="18" fill="#022c22" font-weight="bold">عثمان</text>
+                                </svg>
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <h3 class="font-bold text-emerald-900 text-sm">Seni Kaligrafi & Tughra</h3>
+                                <p class="text-xs text-slate-600">Monogram resmi atau stempel khas para Sultan Usmani yang dirancang dengan keindahan seni estetika tinggi.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition">
+                            <div class="h-44 bg-emerald-900 flex items-center justify-center relative p-4">
+                                <svg class="w-full h-full text-amber-200" viewBox="0 0 200 120" fill="none">
+                                    <rect x="40" y="20" width="120" height="80" rx="5" fill="currentColor" opacity="0.8"/>
+                                    <path d="M50 30 Q 100 50 150 30" stroke="#022c22" stroke-width="2" fill="none"/>
+                                    <circle cx="90" cy="70" r="15" fill="#991b1b"/>
+                                </svg>
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <h3 class="font-bold text-emerald-900 text-sm">Manuskrip Peta Piri Reis</h3>
+                                <p class="text-xs text-slate-600">Dokumen kartografi bersejarah tinggi buatan Laksamana Piri Reis pada tahun 1513 yang tersimpan di Istana Topkapi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 6: VIDEO PEMBELAJARAN -->
+            <section id="page-video" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-6 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-emerald-900 flex items-center gap-3">
+                            <i class="fa-solid fa-video text-gold-600"></i>
+                            Video Pembelajaran Interaktif
+                        </h2>
+                        <p class="text-xs text-slate-600 mt-1">Simulasi audiovisual mengenai sejarah dan perjuangan Daulah Usmani.</p>
+                    </div>
+
+                    <!-- Video Container / Embedded Canvas Player Simulation -->
+                    <div class="bg-emerald-950 rounded-2xl overflow-hidden shadow-2xl border border-gold-500/30 p-4 text-white text-center space-y-4">
+                        <div class="relative aspect-video bg-black rounded-xl overflow-hidden flex flex-col items-center justify-center border border-emerald-800">
+                            <!-- Visual Graphic Simulation inside Player -->
+                            <div class="space-y-3">
+                                <div class="w-16 h-16 rounded-full bg-gold-500/20 border-2 border-gold-400 flex items-center justify-center mx-auto text-gold-400">
+                                    <i class="fa-solid fa-play text-2xl ml-1"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-amber-300">Dokumenter: Sejarah Daulah Usmani</h3>
+                                <p class="text-xs text-emerald-300 max-w-md px-4">Video menyajikan kilas balik penaklukan Konstantinopel & arsitektur keemasan Sultan Sulaiman.</p>
+                            </div>
+
+                            <!-- Embedded Info Bar -->
+                            <div class="absolute bottom-0 inset-x-0 bg-emerald-900/90 px-4 py-2 flex items-center justify-between text-xs text-amber-300">
+                                <span><i class="fa-solid fa-circle text-red-500 mr-1 animate-pulse"></i> Mode Simulasi Offline</span>
+                                <span>Durasi: 08:45</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-emerald-900/50 rounded-xl text-left text-xs text-emerald-200 space-y-1">
+                            <p class="font-bold text-amber-300">Catatan Pembelajaran:</p>
+                            <p>Saksikan bagaimana koordinasi kepemimpinan dan semangat religius mampu membangun peradaban yang toleran dan maju pesat selama bertahun-tahun.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 7: KUIS INTERAKTIF -->
+            <section id="page-kuis" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-6 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <div class="flex justify-between items-center border-b border-emerald-100 pb-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-emerald-900 flex items-center gap-3">
+                                <i class="fa-solid fa-circle-question text-gold-600"></i>
+                                Kuis Interaktif (Latihan)
+                            </h2>
+                            <p class="text-xs text-slate-600 mt-1">Uji pemahamanmu secara langsung. Pilih jawaban yang benar!</p>
+                        </div>
+                        <span id="quizCounter" class="text-xs font-bold px-3 py-1.5 bg-emerald-800 text-gold-300 rounded-full">
+                            Soal 1 dari 10
+                        </span>
+                    </div>
+
+                    <!-- Quiz Card -->
+                    <div id="quizContainer" class="space-y-6">
+                        <div class="bg-emerald-50/80 p-5 rounded-2xl border border-emerald-200">
+                            <h3 id="quizQuestion" class="text-base sm:text-lg font-bold text-emerald-950">
+                                Loading soal...
+                            </h3>
+                        </div>
+
+                        <!-- Options Grid -->
+                        <div id="quizOptions" class="grid grid-cols-1 gap-3">
+                            <!-- Injected dynamically -->
+                        </div>
+
+                        <!-- Feedback Area -->
+                        <div id="quizFeedback" class="hidden p-4 rounded-2xl border text-sm space-y-2">
+                            <!-- Dynamic Feedback -->
+                        </div>
+
+                        <!-- Quiz Action Navigation -->
+                        <div class="flex justify-between items-center pt-2">
+                            <button id="quizPrevBtn" onclick="prevQuizQuestion()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-300 transition disabled:opacity-50">
+                                <i class="fa-solid fa-arrow-left mr-1"></i> Sebelum
+                            </button>
+                            <button id="quizNextBtn" onclick="nextQuizQuestion()" class="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs transition flex items-center gap-1">
+                                <span>Selanjutnya</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 8: EVALUASI PEMBELAJARAN -->
+            <section id="page-evaluasi" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-6 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <div class="border-b border-emerald-100 pb-4">
+                        <h2 class="text-2xl font-bold text-emerald-900 flex items-center gap-3">
+                            <i class="fa-solid fa-file-pen text-gold-600"></i>
+                            Evaluasi Pembelajaran Akhir
+                        </h2>
+                        <p class="text-xs text-slate-600 mt-1">Ujian penilaian otomatis (10 Soal Pilihan Ganda). Hasil nilai akhir 0–100.</p>
+                    </div>
+
+                    <!-- Intro State for Evaluasi -->
+                    <div id="evalIntro" class="text-center py-8 space-y-5">
+                        <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-900 flex items-center justify-center mx-auto text-3xl">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                        </div>
+                        <div class="max-w-md mx-auto space-y-2">
+                            <h3 class="text-xl font-bold text-emerald-950">Siap Melakukan Evaluasi?</h3>
+                            <p class="text-xs text-slate-600">Pastikan kamu telah mempelajari seluruh materi. Nilai akhir akan dihitung secara otomatis setelah selesai mengerjakan.</p>
+                        </div>
+                        <button onclick="startEvaluasi()" class="px-8 py-3.5 bg-gradient-to-r from-emerald-800 to-emerald-950 text-gold-300 font-bold rounded-full shadow-lg hover:scale-105 transition">
+                            Mulai Evaluasi Sekarang
+                        </button>
+                    </div>
+
+                    <!-- Evaluation Active Form -->
+                    <div id="evalActive" class="hidden space-y-6">
+                        <div class="flex justify-between items-center bg-emerald-900 text-white px-4 py-2.5 rounded-xl text-xs">
+                            <span id="evalProgressText" class="font-bold text-amber-300">Soal 1 dari 10</span>
+                            <span class="text-emerald-200"><i class="fa-solid fa-clock mr-1"></i> Penilaian Otomatis</span>
+                        </div>
+
+                        <div class="bg-amber-50/80 p-5 rounded-2xl border border-amber-200">
+                            <h3 id="evalQuestionText" class="text-base sm:text-lg font-bold text-slate-900">
+                                Question placeholder...
+                            </h3>
+                        </div>
+
+                        <div id="evalOptionsContainer" class="grid grid-cols-1 gap-3">
+                            <!-- Dynamic Options -->
+                        </div>
+
+                        <div class="flex justify-between items-center pt-2">
+                            <button id="evalPrevBtn" onclick="prevEvalQuestion()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-300 transition">
+                                Sebelum
+                            </button>
+                            <button id="evalNextBtn" onclick="nextEvalQuestion()" class="px-6 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs transition">
+                                Selanjutnya
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Evaluation Result State -->
+                    <div id="evalResult" class="hidden space-y-6 text-center py-6">
+                        <div class="inline-block p-4 rounded-full bg-gold-500/20 border border-gold-500 text-gold-600 mb-2">
+                            <i class="fa-solid fa-award text-5xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-emerald-950">Hasil Evaluasi Pembelajaran</h3>
+                        
+                        <!-- Score Display Box -->
+                        <div class="max-w-xs mx-auto bg-gradient-to-br from-emerald-900 to-emerald-950 text-white p-6 rounded-3xl border-2 border-gold-400 shadow-xl space-y-2">
+                            <span class="text-xs text-emerald-200 uppercase tracking-widest font-semibold">Skor Akhir Anda</span>
+                            <div id="evalFinalScore" class="text-5xl font-black text-amber-300">0</div>
+                            <span id="evalCategoryBadge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-emerald-950 mt-2">
+                                Kategori
+                            </span>
+                        </div>
+
+                        <p id="evalMotivMessage" class="text-sm text-slate-700 max-w-md mx-auto italic font-medium">
+                            Pesan motivasi akan muncul di sini.
+                        </p>
+
+                        <div class="pt-4 flex flex-wrap justify-center gap-4">
+                            <button onclick="startEvaluasi()" class="px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs transition flex items-center gap-2">
+                                <i class="fa-solid fa-rotate-right"></i> Ulangi Evaluasi
+                            </button>
+                            <button onclick="navigateTo('materi')" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-xs transition flex items-center gap-2">
+                                <i class="fa-solid fa-book"></i> Pelajari Kembali Materi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 9: PROFIL PENGEMBANG -->
+            <section id="page-profil" class="page-content hidden animate-fade-in">
+                <div class="glass-card rounded-3xl p-6 sm:p-8 text-slate-800 shadow-xl border border-gold-500/30 space-y-6">
+                    <div class="border-b border-emerald-100 pb-4">
+                        <h2 class="text-2xl font-bold text-emerald-900 flex items-center gap-3">
+                            <i class="fa-solid fa-id-card text-gold-600"></i>
+                            Profil Pengembang Media
+                        </h2>
+                        <p class="text-xs text-slate-600 mt-1">Informasi penyusun Media Pembelajaran Interaktif ini.</p>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center gap-8 bg-emerald-50/60 p-6 rounded-3xl border border-emerald-200/80">
+                        <!-- Avatar Graphic -->
+                        <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-emerald-800 to-emerald-950 p-1.5 shadow-xl flex-shrink-0">
+                            <div class="w-full h-full rounded-full bg-emerald-900 flex items-center justify-center text-amber-300 text-4xl font-bold border-2 border-gold-400">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                        </div>
+
+                        <!-- Details Grid -->
+                        <div class="space-y-3 text-sm text-center md:text-left flex-grow">
+                            <div>
+                                <span class="text-xs font-bold text-gold-700 uppercase tracking-wider">Nama Pengembang</span>
+                                <h3 class="text-xl font-bold text-emerald-950">Tim Pengembang PAI Digital</h3>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                    <span class="text-slate-400 block font-semibold">Mata Pelajaran:</span>
+                                    <span class="font-bold text-emerald-900">PAI dan Budi Pekerti</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                    <span class="text-slate-400 block font-semibold">Sasaran Kelas:</span>
+                                    <span class="font-bold text-emerald-900">Kelas IX SMP / MTs</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                    <span class="text-slate-400 block font-semibold">Instansi / Sekolah:</span>
+                                    <span class="font-bold text-emerald-900">SMP / MTs Indonesia</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                    <span class="text-slate-400 block font-semibold">Tahun Pembuatan:</span>
+                                    <span class="font-bold text-emerald-900">2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-slate-700 space-y-1">
+                        <p class="font-bold text-amber-900"><i class="fa-solid fa-circle-info mr-1"></i> Lisensi Penggunaan:</p>
+                        <p>Media Pembelajaran Interaktif ini dirancang gratis untuk keperluan pendidikan pembelajaran agama Islam kelas IX di seluruh sekolah SMP/MTs.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- GLOBAL FOOTER NAVIGATION -->
+    <footer class="bg-emerald-900 border-t border-gold-500/30 text-emerald-200 text-xs py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-book-quran text-gold-400"></i>
+                <span>MPI PAI-BP Kelas IX — Mengapresiasi Peradaban Daulah Usmani</span>
+            </div>
+            <!-- Bottom Page Navigation Controls -->
+            <div class="flex items-center space-x-3">
+                <button onclick="navigateStep(-1)" class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-amber-300 font-semibold transition border border-gold-500/20 flex items-center gap-1">
+                    <i class="fa-solid fa-chevron-left text-xs"></i> Kembali
+                </button>
+                <button onclick="navigateStep(1)" class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-amber-300 font-semibold transition border border-gold-500/20 flex items-center gap-1">
+                    Lanjut <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* Global Page List Sequence */
+        const pageSequence = ['home', 'petunjuk', 'materi', 'timeline', 'galeri', 'video', 'kuis', 'evaluasi', 'profil'];
+        let currentPageIndex = 0;
+
+        /* Quiz Interactive Data (10 Questions) */
+        const quizData = [
+            {
+                q: "Siapakah tokoh pendiri Daulah Usmani yang namanya diabadikan menjadi nama dinasti ini?",
+                options: ["Orhan", "Osman I", "Murad I", "Muhammad Al-Fatih"],
+                answer: 1,
+                explain: "Osman I (Osman Bey) memproklamasikan kemerdekaan wilayahnya pada tahun 1299 M dan nama dinasti diambil dari namanya."
+            },
+            {
+                q: "Pada tahun berapakah Sultan Muhammad Al-Fatih berhasil menaklukkan Kota Konstantinopel?",
+                options: ["1299 M", "1326 M", "1453 M", "1520 M"],
+                answer: 2,
+                explain: "Konstantinopel ditaklukkan pada 29 Mei 1453 M oleh Sultan Muhammad II (Al-Fatih)."
+            },
+            {
+                q: "Pasukan militer khusus infanteri elite berdisiplin tinggi pada masa Daulah Usmani dikenal dengan nama...",
+                options: ["Janissary (Inkishariyyah)", "Mongol Guard", "Sipahi", "Mamluk"],
+                answer: 0,
+                explain: "Janissary atau Inkishariyyah dibentuk sejak masa Sultan Orhan sebagai pasukan khusus pelindung negara."
+            },
+            {
+                q: "Siapakah sultan Usmani yang dijuluki 'Al-Qanuni' karena berhasil menyusun kodifikasi hukum terstruktur?",
+                options: ["Sultan Osman I", "Sultan Murad II", "Sultan Sulaiman I", "Sultan Selim I"],
+                answer: 2,
+                explain: "Sultan Sulaiman I dijuluki Al-Qanuni (The Lawgiver) karena berhasil menyusun Kanunname (undang-undang)."
+            },
+            {
+                q: "Arsitek jenius pada masa Daulah Usmani yang merancang Masjid Suleymaniye dan Masjid Selimiye adalah...",
+                options: ["Ibnu Sina", "Al-Khawarizmi", "Mimar Sinan", "Piri Reis"],
+                answer: 2,
+                explain: "Mimar Sinan adalah arsitek utama kekhalifahan Usmani yang merancang berbagai mahakarya arsitektur Islam."
+            },
+            {
+                q: "Peta dunia yang sangat akurat menggambarkan benua Amerika pada abad ke-16 dibuat oleh laksamana laut bernama...",
+                options: ["Piri Reis", "Ibnu Batutah", "Al-Biruni", "Tariq bin Ziyad"],
+                answer: 0,
+                explain: "Laksamana Piri Reis menggambarkan peta navigator yang presisi pada tahun 1513 M."
+            },
+            {
+                q: "Suku asal pendiri Daulah Usmani yang bermigrasi dari kawasan Asia Tengah adalah suku...",
+                options: ["Quraisy", "Kayi", "Khajaz", "Aus"],
+                answer: 1,
+                explain: "Kabilah suku Kayi adalah cabang dari bangsa Turki Saljuk yang berpindah menghindari invasi Mongol."
+            },
+            {
+                q: "Bangunan bersejarah bekas katedral Romawi yang diubah menjadi masjid oleh Sultan Muhammad Al-Fatih adalah...",
+                options: ["Taj Mahal", "Hagia Sophia", "Alhambra", "Masjid Umayyad"],
+                answer: 1,
+                explain: "Hagia Sophia diubah fungsinya menjadi masjid utama setelah penaklukan Konstantinopel pada tahun 1453 M."
+            },
+            {
+                q: "Sistem sosial integratif yang menyatukan fungsi masjid, sekolah, rumah sakit, dan dapur umum disebut...",
+                options: ["Madrasah", "Kulliye", "Zawiyah", "Baitul Hikmah"],
+                answer: 1,
+                explain: "Kulliye merupakan kompleks bangunan terpadu peninggalan Usmani yang berfokus pada pelayanan sosial-keagamaan."
+            },
+            {
+                q: "Nilai keteladanan utama dari Sultan Muhammad Al-Fatih yang wajib kita contoh dalam kehidupan sehari-hari adalah...",
+                options: ["Pantang menyerah & berilmu tinggi", "Suka menyendiri", "Sombong akan kekuatan", "Acuh terhadap teknologi"],
+                answer: 0,
+                explain: "Kegigihan, penguasaan ilmu bahasa, serta semangat pantang menyerah Al-Fatih merupakan inspirasi keteladanan."
+            }
+        ];
+
+        /* Quiz State Variables */
+        let currentQuizIndex = 0;
+        let quizAnswers = new Array(quizData.length).fill(null);
+
+        /* Evaluasi State Variables (10 Questions mapped from dataset or custom) */
+        let currentEvalIndex = 0;
+        let evalUserAnswers = new Array(quizData.length).fill(null);
+
+        /* Web Audio API Synthesizer BGM (Offline Sound Generator) */
+        let audioCtx = null;
+        let bgmOscillator = null;
+        let bgmGain = null;
+        let isBgmPlaying = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function toggleBGM() {
+            initAudio();
+            const btnIcon = document.getElementById('bgmIcon');
+            if (isBgmPlaying) {
+                stopBGM();
+                btnIcon.className = "fa-solid fa-volume-xmark";
+                isBgmPlaying = false;
+            } else {
+                startBGM();
+                btnIcon.className = "fa-solid fa-volume-high text-amber-300 animate-pulse";
+                isBgmPlaying = true;
+            }
+        }
+
+        function startBGM() {
+            if (!audioCtx) return;
+            try {
+                // Ambient Oriental Tone Synth
+                bgmOscillator = audioCtx.createOscillator();
+                bgmGain = audioCtx.createGain();
+                
+                bgmOscillator.type = 'sine';
+                bgmOscillator.frequency.setValueAtTime(220, audioCtx.currentTime); // Note A3
+                bgmGain.gain.setValueAtTime(0.03, audioCtx.currentTime); // Low background volume
+                
+                bgmOscillator.connect(bgmGain);
+                bgmGain.connect(audioCtx.destination);
+                
+                bgmOscillator.start();
+            } catch (e) {
+                console.log("Audio Error:", e);
+            }
+        }
+
+        function stopBGM() {
+            if (bgmOscillator) {
+                bgmOscillator.stop();
+                bgmOscillator.disconnect();
+                bgmOscillator = null;
+            }
+        }
+
+        /* Navigation Controller */
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+
+            // Show target page
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Update page index tracking
+            currentPageIndex = pageSequence.indexOf(pageId);
+            if (currentPageIndex === -1) currentPageIndex = 0;
+
+            // Update progress bar
+            const progressPercent = ((currentPageIndex + 1) / pageSequence.length) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+            // Highlight Active Nav Button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-page') === pageId) {
+                    btn.classList.add('bg-emerald-800', 'text-amber-300', 'font-bold');
+                } else {
+                    btn.classList.remove('bg-emerald-800', 'text-amber-300', 'font-bold');
+                }
+            });
+
+            // Auto Close Mobile Menu if open
+            const sidebar = document.getElementById('sidebarNav');
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('hidden');
+            }
+
+            // Page specific initializers
+            if (pageId === 'kuis') {
+                renderQuizQuestion();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function navigateStep(direction) {
+            let nextIndex = currentPageIndex + direction;
+            if (nextIndex >= 0 && nextIndex < pageSequence.length) {
+                navigateTo(pageSequence[nextIndex]);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebarNav');
+            sidebar.classList.toggle('hidden');
+        }
+
+        /* Tab Switcher for Materi Subbab */
+        function switchMateriTab(tabIndex) {
+            // Update tab button styles
+            const buttons = document.querySelectorAll('.materi-tab-btn');
+            buttons.forEach((btn, idx) => {
+                if (idx === tabIndex) {
+                    btn.className = "materi-tab-btn tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2";
+                } else {
+                    btn.className = "materi-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 transition flex items-center gap-2";
+                }
+            });
+
+            // Show corresponding subcontent
+            document.querySelectorAll('.materi-subcontent').forEach((content, idx) => {
+                if (idx === tabIndex) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        /* Timeline Toggle Helper */
+        function toggleTimelineDetail(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        /* Interactive Quiz Logic */
+        function renderQuizQuestion() {
+            const qData = quizData[currentQuizIndex];
+            document.getElementById('quizCounter').innerText = `Soal ${currentQuizIndex + 1} dari ${quizData.length}`;
+            document.getElementById('quizQuestion').innerText = `${currentQuizIndex + 1}. ${qData.q}`;
+
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+
+            const selectedAnswer = quizAnswers[currentQuizIndex];
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm font-medium transition flex items-center justify-between ${
+                    selectedAnswer === idx 
+                    ? 'bg-emerald-800 text-gold-300 border-emerald-900 shadow-md' 
+                    : 'bg-white text-slate-800 border-slate-200 hover:bg-emerald-50'
+                }`;
+                btn.onclick = () => selectQuizAnswer(idx);
+                btn.innerHTML = `
+                    <span>${String.fromCharCode(65 + idx)}. ${opt}</span>
+                    ${selectedAnswer === idx ? '<i class="fa-solid fa-circle-check text-gold-400"></i>' : ''}
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Feedback Area Logic
+            const feedbackEl = document.getElementById('quizFeedback');
+            if (selectedAnswer !== null) {
+                feedbackEl.classList.remove('hidden');
+                const isCorrect = selectedAnswer === qData.answer;
+                if (isCorrect) {
+                    feedbackEl.className = "p-4 rounded-2xl border text-xs sm:text-sm bg-emerald-100 border-emerald-300 text-emerald-900 animate-fade-in";
+                    feedbackEl.innerHTML = `<div class="font-bold flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-600 text-base"></i> Jawaban Benar!</div><p class="mt-1">${qData.explain}</p>`;
+                } else {
+                    feedbackEl.className = "p-4 rounded-2xl border text-xs sm:text-sm bg-red-100 border-red-300 text-red-900 animate-fade-in";
+                    feedbackEl.innerHTML = `<div class="font-bold flex items-center gap-2"><i class="fa-solid fa-circle-xmark text-red-600 text-base"></i> Jawaban Belum Tepat</div><p class="mt-1">Jawaban benar: <strong>${qData.options[qData.answer]}</strong>. ${qData.explain}</p>`;
+                }
+            } else {
+                feedbackEl.classList.add('hidden');
+            }
+
+            // Disable/Enable Prev button
+            document.getElementById('quizPrevBtn').disabled = (currentQuizIndex === 0);
+        }
+
+        function selectQuizAnswer(optIndex) {
+            quizAnswers[currentQuizIndex] = optIndex;
+            renderQuizQuestion();
+        }
+
+        function nextQuizQuestion() {
+            if (currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                alert("Kamu telah menyelesaikan semua soal kuis latihan!");
+            }
+        }
+
+        function prevQuizQuestion() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                renderQuizQuestion();
+            }
+        }
+
+        /* Evaluasi Final Test Logic */
+        function startEvaluasi() {
+            document.getElementById('evalIntro').classList.add('hidden');
+            document.getElementById('evalResult').classList.add('hidden');
+            document.getElementById('evalActive').classList.remove('hidden');
+
+            currentEvalIndex = 0;
+            evalUserAnswers = new Array(quizData.length).fill(null);
+            renderEvalQuestion();
+        }
+
+        function renderEvalQuestion() {
+            const qData = quizData[currentEvalIndex];
+            document.getElementById('evalProgressText').innerText = `Soal ${currentEvalIndex + 1} dari ${quizData.length}`;
+            document.getElementById('evalQuestionText').innerText = `${currentEvalIndex + 1}. ${qData.q}`;
+
+            const container = document.getElementById('evalOptionsContainer');
+            container.innerHTML = '';
+
+            const chosenOpt = evalUserAnswers[currentEvalIndex];
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm font-medium transition flex items-center justify-between ${
+                    chosenOpt === idx 
+                    ? 'bg-emerald-800 text-gold-300 border-emerald-900 shadow-md' 
+                    : 'bg-white text-slate-800 border-slate-200 hover:bg-emerald-50'
+                }`;
+                btn.onclick = () => {
+                    evalUserAnswers[currentEvalIndex] = idx;
+                    renderEvalQuestion();
+                };
+                btn.innerHTML = `
+                    <span>${String.fromCharCode(65 + idx)}. ${opt}</span>
+                    ${chosenOpt === idx ? '<i class="fa-solid fa-circle-check text-gold-400"></i>' : ''}
+                `;
+                container.appendChild(btn);
+            });
+
+            document.getElementById('evalPrevBtn').disabled = (currentEvalIndex === 0);
+        }
+
+        function nextEvalQuestion() {
+            if (currentEvalIndex < quizData.length - 1) {
+                currentEvalIndex++;
+                renderEvalQuestion();
+            } else {
+                finishEvaluasi();
+            }
+        }
+
+        function prevEvalQuestion() {
+            if (currentEvalIndex > 0) {
+                currentEvalIndex--;
+                renderEvalQuestion();
+            }
+        }
+
+        function finishEvaluasi() {
+            // Calculate Score
+            let correctCount = 0;
+            quizData.forEach((item, idx) => {
+                if (evalUserAnswers[idx] === item.answer) {
+                    correctCount++;
+                }
+            });
+
+            const finalScore = Math.round((correctCount / quizData.length) * 100);
+
+            document.getElementById('evalActive').classList.add('hidden');
+            document.getElementById('evalResult').classList.remove('hidden');
+
+            document.getElementById('evalFinalScore').innerText = finalScore;
+
+            const badge = document.getElementById('evalCategoryBadge');
+            const msg = document.getElementById('evalMotivMessage');
+
+            if (finalScore >= 85) {
+                badge.innerText = "Sangat Baik (Mumtaz)";
+                badge.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-400 text-emerald-950 mt-2";
+                msg.innerText = "Luar biasa! Kamu sangat memahami sejarah dan apresiasi peradaban Daulah Usmani dengan sempurna.";
+            } else if (finalScore >= 70) {
+                badge.innerText = "Baik (Jayyid)";
+                badge.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-emerald-950 mt-2";
+                msg.innerText = "Bagus! Pemahamanmu sudah baik. Pelajari kembali beberapa subbab untuk hasil yang lebih maksimal.";
+            } else {
+                badge.innerText = "Perlu Belajar Lagi";
+                badge.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-400 text-white mt-2";
+                msg.innerText = "Jangan berkecil hati! Ulangi membaca materi pembelajaran dan cobalah evaluasi kembali.";
+            }
+        }
+
+        /* Initial Load Function */
+        window.onload = function() {
+            navigateTo('home');
+        };
+    </script>
+</body>
+</html>
